@@ -1,4 +1,5 @@
 export const firebaseConfig  = {
+    production: false,
     apiKey: "AIzaSyDusC-AJjp3pBdicQ1TI7nll2HgkB19aLg",
     authDomain: "ngtestapp-a1fcc.firebaseapp.com",
     projectId: "ngtestapp-a1fcc",
