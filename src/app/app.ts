@@ -1,12 +1,20 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { NotificationService } from './notification.service';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
   templateUrl: './app.html',
-  styleUrl: './app.css'
+  styleUrls: ['./app.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class App {
-  protected readonly title = signal('myapp');
+export class AppComponent {
+  private notificationService = inject(NotificationService);
+
+  constructor() {
+    this.notificationService.requestPermission();
+  }
+
+  sendNotification() {
+    this.notificationService.sendNotification('Test Notification', 'This is a test notification from the app.');
+  }
 }
