@@ -1,60 +1,27 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
-import { NotificationService } from './notification.service';
-import { initializeApp } from '@angular/fire/app';
-import { getMessaging, getToken, onMessage } from '@angular/fire/messaging';
-import { firebaseConfig } from '../environments/environment';
+import { Component, inject, OnInit } from '@angular/core';
+    import { CommonModule } from '@angular/common';
+    import { RouterOutlet } from '@angular/router';
+    import { NotificationService } from './notification.service'; // Assicurati che il percorso sia corretto
 
-@Component({
-  selector: 'app-root',
-  templateUrl: './app.html',
-  styleUrls: ['./app.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-})
-export class AppComponent implements OnInit {
-  private notificationService = inject(NotificationService);
-  private messaging: any;
+    @Component({
+      selector: 'app-root',
+      standalone: true,
+      imports: [CommonModule, RouterOutlet],
+      templateUrl: './app.html', // O template inline
+      styleUrl: './app.css', // O style inline
+      // Ricorda di aggiungere changeDetection: ChangeDetectionStrategy.OnPush, se non presente
+    })
+    export class AppComponent implements OnInit {
+      private notificationService = inject(NotificationService);
 
-  constructor() {
-    
-  }
-
-  sendNotification() {
-    this.notificationService.sendNotification('Test Notification', 'This is a test notification from the app.');
-  }
-
-  ngOnInit(): void {
-    const app = initializeApp(firebaseConfig);
-    this.messaging = getMessaging(app);
-    // this.notificationService.requestPermission();
-    this.requestPermission();
-
-    onMessage(this.messaging, (payload) => {
-      alert(JSON.stringify(payload));
-      // ...
-    });
-  }
-
-  requestPermission() {
-    console.log('Requesting permission...');
-    Notification.requestPermission().then((permission) => {
-      if (permission === 'granted') {
-        console.log('Notification permission granted.');
-        getToken(this.messaging, {
-          vapidKey: firebaseConfig.apiKey,
-        })
-          .then((currentToken: string) => {
-            if (currentToken) {
-              console.log(currentToken);
-            } else {
-              console.log(
-                'No registration token available. Request permission to generate one.'
-              );
-            }
-          })
-          .catch((err: any) => {
-            console.log(err);
-          });
+      ngOnInit(): void {
+        this.notificationService.requestPermissionAndGetToken().then(token => {
+          if (token) {
+            console.log('FCM Token ottenuto:', token);
+            // Puoi mostrare il token nella UI o inviarlo al backend
+          }
+        });
       }
-    });
-  }
-}
+
+      // ... altri metodi del componente
+    }

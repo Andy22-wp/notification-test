@@ -1,8 +1,8 @@
 importScripts(
-    "https://www.gstatic.com/firebasejs/11.4.0/firebase-app-compat.js"
+    "https://www.gstatic.com/firebasejs/11.10.0/firebase-app-compat.js"
   );
   importScripts(
-    "https://www.gstatic.com/firebasejs/11.4.0/firebase-messaging-compat.js"
+    "https://www.gstatic.com/firebasejs/11.10.0/firebase-messaging-compat.js"
   );
   
   const firebaseConfig  = {
@@ -16,4 +16,19 @@ importScripts(
   
   const app = firebase.initializeApp(firebaseConfig);
   const messaging = firebase.messaging();
+  
+  // Handle incoming messages. Set backgroundMessage to true to make it work.
+  messaging.onBackgroundMessage(function(payload) {
+    console.log('Received background message ', payload);
+    // Customize notification here
+    const notificationTitle = payload.notification.title;
+    const notificationOptions = {
+      body: payload.notification.body,
+      icon: '/favicon.ico' // O un'icona personalizzata
+    };
+
+    self.registration.showNotification(notificationTitle,
+      notificationOptions);
+  });
+
   
