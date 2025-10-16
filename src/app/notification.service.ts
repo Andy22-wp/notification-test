@@ -15,7 +15,7 @@ import { inject, Injectable } from '@angular/core';
       }
 
       requestPermissionAndGetToken(): Promise<string | null> {
-        return getToken(this.messaging, { vapidKey: ' BAbdHeiO-ygBb9XxApz-8i-iLslZjvBEN8KPXP6NO2naJvCg4QxbT3KMJqjNlQkS8zNb7SXniL8o2MsAKVJ9bAE' })
+        return getToken(this.messaging, { vapidKey: 'BAbdHeiO-ygBb9XxApz-8i-iLslZjvBEN8KPXP6NO2naJvCg4QxbT3KMJqjNlQkS8zNb7SXniL8o2MsAKVJ9bAE' })
           .then((currentToken) => {
             if (currentToken) {
               console.log('FCM registration token:', currentToken);
